@@ -93,6 +93,7 @@ void init_shell(){
     printf("\t██   ████ ███████ ██      ██ ███████ ███████ ██ ███████ \n");
     
     printf("\n\t\t-HOW ABOUT CHECKING FILE PROPERTIES ?-"); 
+    printf("\n\t\t-v1.0 Nemesis Group-"); 
     printf("\n\n\n\n*******************"
         "***********************"
         "*************************"); 
