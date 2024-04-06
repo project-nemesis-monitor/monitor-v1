@@ -19,4 +19,25 @@ void updateFile(MYSQL *conn, const char *old_path, const char *new_path, const c
         fprintf(stderr, "Error updating file: %s\n", mysql_error(conn));
     }
 }
+char *permissions_to_octal(mode_t perm)
+{
+    char *result = (char *)malloc(sizeof(char) * 5);
+    if (result == NULL)
+    {
+        fprintf(stderr, "Error allocating memory\n");
+        exit(EXIT_FAILURE);
+    }
 
+    snprintf(result, 5, "%o", perm);
+    return result;
+}
+void updatePermissionFile(MYSQL *conn, const char *filename, const char *perm)
+{
+    char query[10000];
+    snprintf(query, sizeof(query), "UPDATE checkfile SET permissions = '%s' WHERE filename = '%s'", perm, filename);
+
+    if (mysql_query(conn, query))
+    {
+        fprintf(stderr, "Error updating file: %s\n", mysql_error(conn));
+    }
+}
