@@ -60,7 +60,7 @@ void sigint_handler(int signum)
 
     signal(signum, SIG_IGN);
     printf("\nOUCH, did you hit Ctrl-C ?\n"
-           "Do you really want to quit ? [y/n] ");
+           "Do you really want to quit ? [y/n] >>>> ");
     c = getchar();
     if (c == 'y' || c == 'Y') {
         printf("Stopping service... GoodBye!");
