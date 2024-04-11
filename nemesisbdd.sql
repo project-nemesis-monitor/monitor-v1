@@ -187,8 +187,18 @@ CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW
 BEGIN
     IF NEW.path != OLD.path THEN
         INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id); 
-    END IF;    
+        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id);
+    END IF;
+
+    IF NEW.filename != OLD.filename THEN
+        INSERT INTO logs (event_type, event_description, file_id)
+        VALUES ('filename_change', CONCAT('Filename changed: ', OLD.filename, ' => ', NEW.filename), OLD.id);
+    END IF;
+
+    IF NEW.permissions != OLD.permissions THEN
+        INSERT INTO logs (event_type, event_description, file_id)
+        VALUES ('permissions_change', CONCAT('Permissions changed: ', OLD.permissions, ' => ', NEW.permissions), OLD.id);
+    END IF;   
 END       
 //
 DELIMITER ;   
