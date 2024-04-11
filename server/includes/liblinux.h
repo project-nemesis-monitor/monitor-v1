@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <mariadb/mysql.h>
-#include <bcrypt.h>
 #include <string.h>
 #include <unistd.h>
 #include<sys/types.h> 

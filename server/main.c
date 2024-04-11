@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <signal.h> // Ajout de la bibliothèque signal.h
 #include <mariadb/mysql.h>
-#include <bcrypt.h>
 #include "includes/liblinux.h"
 #include <unistd.h>
 #include <sys/types.h>

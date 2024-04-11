@@ -8,7 +8,7 @@ sudo mysql -e "CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY '2002
 sudo mysql -e "GRANT ALL PRIVILEGES ON nemesisbdd.* TO 'admin'@'localhost';"
 sudo mysql -e "FLUSH PRIVILEGES;"
 
-sudo mysql nemesisbdd < nemesis.sql
+sudo mysql nemesisbdd < nemesisbdd.sql
 
 gcc -Wall server/main.c server/includes/liblinux.c server/includes/reactwthbdd.c -o ./output/server $(mariadb_config --cflags --libs)
 
