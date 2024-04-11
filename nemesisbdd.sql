@@ -187,8 +187,8 @@ CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW
 BEGIN
     IF NEW.path != OLD.path THEN
         INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id) 
-    END IF    
+        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id); 
+    END IF;    
 END       
 //
 DELIMITER ;   
@@ -196,7 +196,7 @@ DELIMITER ;
 DELIMITER //
 CREATE TRIGGER `file_delete_trigger` AFTER DELETE ON `checkfile` FOR EACH ROW 
 BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path)) 
+    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path)); 
 END
 //
 DELIMITER ;
@@ -204,7 +204,7 @@ DELIMITER ;
 DELIMITER // 
 CREATE TRIGGER `file_insert_trigger` AFTER INSERT ON `checkfile` FOR EACH ROW 
 BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path)) 
+    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path)); 
 END
 
 //
