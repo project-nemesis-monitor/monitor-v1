@@ -50,17 +50,16 @@ INSERT INTO `checkfile` (`id`, `file_id`, `filename`, `check_mod`, `path`, `perm
 --
 -- Déclencheurs `checkfile`
 --
-DELIMITER $$
+
 CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW BEGIN
     IF NEW.path != OLD.path THEN
         INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id)DELIMITER ;
-DELIMITER $$
+        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id) ;
 CREATE TRIGGER `file_delete_trigger` AFTER DELETE ON `checkfile` FOR EACH ROW BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path))DELIMITER ;
-DELIMITER $$
+    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path));
+
 CREATE TRIGGER `file_insert_trigger` AFTER INSERT ON `checkfile` FOR EACH ROW BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path))DELIMITER ;
+    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path));
 
 -- --------------------------------------------------------
 
