@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
     }
 
     // Déclaration des données de test
-    const char *insert_query = "INSERT INTO checkfile (file_id, check_mod, path, upload_by, upload_at) VALUES (?, ?, ?, ?, ?)";
+    const char *insert_query = "INSERT INTO checkfile (check_mod, path, permissions, filename, upload_by, upload_at) VALUES (?, ?, ?, ?, ?, ?)";
     MYSQL_STMT *stmt = mysql_stmt_init(conn);
     if (stmt == NULL) {
         fprintf(stderr, "Error initializing MySQL statement\n");
@@ -38,9 +38,10 @@ int main(int argc, char const *argv[]) {
     }
 
     // Paramètres liés aux colonnes de la table
-    char file_id[20] = "testbvh"; // Vous devez générer un ID unique pour chaque enregistrement
-    unsigned char check_mod = 1;  // Exemple de modificateur à 1 (true)
-    char path[100] = "/chemin/vers/fichier2";
+    unsigned char check_mod = 1; // Exemple de modificateur à 1 (true)
+    char path[100] = "/home/virtuoso_vendetta/Bureau/monitor-v1/ff/tester.txt";
+    char permissions[6] = "0644"; // Exemple de permissions
+    char filename[200] = "tester.txt"; // Exemple de nom de fichier
     char upload_by[200] = "301d1246-93bd-4e7f-b570-fd7fb2c4d2b1"; // Remplacez "id_utilisateur" par l'ID de l'utilisateur réel
     MYSQL_TIME upload_at;
     time_t current_time = time(NULL);
@@ -52,28 +53,32 @@ int main(int argc, char const *argv[]) {
     upload_at.minute = tm_info->tm_min;
     upload_at.second = tm_info->tm_sec;
 
-    MYSQL_BIND bind_params[5];
+    MYSQL_BIND bind_params[6];
     memset(bind_params, 0, sizeof(bind_params));
 
-    bind_params[0].buffer_type = MYSQL_TYPE_STRING;
-    bind_params[0].buffer = file_id;
-    bind_params[0].buffer_length = strlen(file_id);
+    bind_params[0].buffer_type = MYSQL_TYPE_TINY;
+    bind_params[0].buffer = &check_mod;
+    bind_params[0].is_unsigned = 1;
+    bind_params[0].is_null = 0;
 
-    bind_params[1].buffer_type = MYSQL_TYPE_TINY;
-    bind_params[1].buffer = &check_mod;
-    bind_params[1].is_unsigned = 1;
-    bind_params[1].is_null = 0;
+    bind_params[1].buffer_type = MYSQL_TYPE_STRING;
+    bind_params[1].buffer = path;
+    bind_params[1].buffer_length = strlen(path);
 
     bind_params[2].buffer_type = MYSQL_TYPE_STRING;
-    bind_params[2].buffer = path;
-    bind_params[2].buffer_length = strlen(path);
+    bind_params[2].buffer = permissions;
+    bind_params[2].buffer_length = strlen(permissions);
 
     bind_params[3].buffer_type = MYSQL_TYPE_STRING;
-    bind_params[3].buffer = upload_by;
-    bind_params[3].buffer_length = strlen(upload_by);
+    bind_params[3].buffer = filename;
+    bind_params[3].buffer_length = strlen(filename);
 
-    bind_params[4].buffer_type = MYSQL_TYPE_TIMESTAMP;
-    bind_params[4].buffer = &upload_at;
+    bind_params[4].buffer_type = MYSQL_TYPE_STRING;
+    bind_params[4].buffer = upload_by;
+    bind_params[4].buffer_length = strlen(upload_by);
+
+    bind_params[5].buffer_type = MYSQL_TYPE_TIMESTAMP;
+    bind_params[5].buffer = &upload_at;
 
     if (mysql_stmt_bind_param(stmt, bind_params) != 0) {
         fprintf(stderr, "Error binding parameters: %s\n", mysql_error(conn));
