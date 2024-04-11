@@ -47,22 +47,7 @@ INSERT INTO `checkfile` (`id`, `file_id`, `filename`, `check_mod`, `path`, `perm
 (2, 'testbvh', 'xx.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt', '666', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 07:37:37'),
 (3, 'hhg4gg2', 'coucou.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/coucou.txt', '644', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 07:37:31');
 
---
--- Déclencheurs `checkfile`
---
-DELIMITER //
-CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW BEGIN
-    IF NEW.path != OLD.path THEN
-        INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id) DELIMITER ;
-DELIMITER //        
-CREATE TRIGGER `file_delete_trigger` AFTER DELETE ON `checkfile` FOR EACH ROW BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path)) DELIMITER ;
-DELIMITER //
-CREATE TRIGGER `file_insert_trigger` AFTER INSERT ON `checkfile` FOR EACH ROW BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path)) DELIMITER ;
 
--- --------------------------------------------------------
 
 --
 -- Structure de la table `logs`
@@ -192,6 +177,24 @@ ALTER TABLE `logs`
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
+
+
+--
+-- Déclencheurs `checkfile`
+--
+DELIMITER //
+CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW BEGIN
+    IF NEW.path != OLD.path THEN
+        INSERT INTO logs (event_type, event_description, file_id)
+        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id) DELIMITER ;
+DELIMITER //        
+CREATE TRIGGER `file_delete_trigger` AFTER DELETE ON `checkfile` FOR EACH ROW BEGIN
+    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path)) DELIMITER ;
+DELIMITER //
+CREATE TRIGGER `file_insert_trigger` AFTER INSERT ON `checkfile` FOR EACH ROW BEGIN
+    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path)) DELIMITER ;
+
+-- --------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
