@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packages=("build-essential" "libmariadb-dev" "mysql-server")
+packages=("build-essential" "libmariadb-dev" "mariadb-server")
 missing_packages=()
 
 for pkg in "${packages[@]}"; do
@@ -21,7 +21,7 @@ sudo mysql -e "FLUSH PRIVILEGES;"
 
 sudo mysql nemesisbdd < nemesisbdd.sql
 
-gcc -Wall server/main.c server/includes/liblinux.c server/includes/reactwthbdd.c -o ./output/server $(mysql_config --cflags --libs)
+gcc -Wall server/main.c server/includes/liblinux.c server/includes/reactwthbdd.c -o ./output/server `mariadb_config --cflags --libs`
 
 service_file="/etc/systemd/system/monitor-nemesis.service"
 service_content="[Unit]
