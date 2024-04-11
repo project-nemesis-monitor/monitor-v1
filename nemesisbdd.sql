@@ -188,7 +188,7 @@ BEGIN
     IF NEW.path != OLD.path THEN
         INSERT INTO logs (event_type, event_description, file_id)
         VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id) 
-    END IF;    
+    END IF    
 END       
 //
 DELIMITER ;   
