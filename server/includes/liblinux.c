@@ -127,6 +127,7 @@ void check_file_changes(MYSQL *conn)
     int fd, wd;
     char buffer[BUF_LEN];
     char *old_path;
+    struct stat statbuff;
 
     fd = inotify_init();
     if (fd < 0)
@@ -147,7 +148,16 @@ void check_file_changes(MYSQL *conn)
 
     while ((row = mysql_fetch_row(result)) != NULL)
     {
-        char *folder_file = remove_last_component(row[0]);
+        char *folder_file;
+        if (stat(row[0], &statbuff) == 0)
+        {
+            if(S_ISDIR(statbuff.st_mode)){
+                folder_file = row[0];
+            } else {
+                folder_file = remove_last_component(row[0]);
+            }
+        }
+        
         wd = inotify_add_watch(fd, folder_file, IN_ATTRIB | IN_MOVE_SELF | IN_MOVED_TO | IN_MODIFY | IN_DELETE);
 
         if (wd < 0)
