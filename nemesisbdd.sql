@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : jeu. 11 avr. 2024 à 12:56
+-- Généré le : jeu. 25 avr. 2024 à 10:53
 -- Version du serveur : 10.11.6-MariaDB-2
 -- Version de PHP : 8.2.12
 
@@ -36,75 +36,31 @@ CREATE TABLE `checkfile` (
   `permissions` text DEFAULT NULL,
   `upload_by` text NOT NULL,
   `upload_at` timestamp NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `checkfile`
 --
 
 INSERT INTO `checkfile` (`id`, `file_id`, `filename`, `check_mod`, `path`, `permissions`, `upload_by`, `upload_at`) VALUES
-(1, 'hhg4gg1', 'test2.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/testother/test2.txt', '644', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 07:37:31'),
-(2, 'testbvh', 'xx.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt', '666', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 07:37:37'),
-(3, 'hhg4gg2', 'coucou.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/coucou.txt', '644', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 07:37:31');
+(1, 'hhg4gg1', 'test2.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/testother/test2.txt', '644', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 05:37:31'),
+(2, 'testbvh', 'xx.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt', '666', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 05:37:37'),
+(3, 'hhg4gg2', 'coucou.txt', 1, '/home/virtuoso_vendetta/Bureau/monitor-v1/coucou.txt', '644', '301d1246-93bd-4e7f-b570-fd7fb2c4d2b1', '2024-04-05 05:37:31');
 
-
+-- --------------------------------------------------------
 
 --
 -- Structure de la table `logs`
 --
 
 CREATE TABLE `logs` (
-  `log_id` int(11) NOT NULL,
-  `event_type` varchar(255) DEFAULT NULL,
-  `event_description` text DEFAULT NULL,
-  `file_id` text NOT NULL,
-  `timestamp` timestamp NULL DEFAULT current_timestamp()
+  `id` int(11) NOT NULL,
+  `operation` varchar(10) NOT NULL,
+  `table_name` varchar(50) NOT NULL,
+  `record_id` int(11) NOT NULL,
+  `record_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`record_data`)),
+  `created_at` timestamp(3) NULL DEFAULT current_timestamp(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `logs`
---
-
-INSERT INTO `logs` (`log_id`, `event_type`, `event_description`, `file_id`, `timestamp`) VALUES
-(1, 'permissions_change', 'Permissions changed: 644 => 640', 'hhg4gg1', '2024-04-05 17:16:49'),
-(2, 'permissions_change', 'Permissions changed: 640 => 644', 'hhg4gg1', '2024-04-05 17:16:53'),
-(3, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/testfile.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/ssl.txt', 'testbvh', '2024-04-06 11:03:25'),
-(4, 'filename_change', 'Filename changed: testfile.txt => ssl.txt', 'testbvh', '2024-04-06 11:03:25'),
-(5, 'permissions_change', 'Permissions changed: 644 => 0000', 'testbvh', '2024-04-06 11:20:56'),
-(6, 'permissions_change', 'Permissions changed: 0000 => 777', 'testbvh', '2024-04-06 11:21:24'),
-(7, 'permissions_change', 'Permissions changed: 777 => yyyy', 'testbvh', '2024-04-06 11:24:57'),
-(8, 'permissions_change', 'Permissions changed: yyyy => 7777', 'testbvh', '2024-04-06 11:28:25'),
-(9, 'permissions_change', 'Permissions changed: 7777 => 777', 'testbvh', '2024-04-06 11:37:16'),
-(10, 'permissions_change', 'Permissions changed: 777 => 644', 'testbvh', '2024-04-06 11:37:31'),
-(11, 'permissions_change', 'Permissions changed: 644 => 2644', 'testbvh', '2024-04-06 11:38:04'),
-(12, 'permissions_change', 'Permissions changed: 2644 => 644', 'testbvh', '2024-04-06 11:38:22'),
-(13, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/ssl.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/testfile.txt', 'testbvh', '2024-04-06 12:46:20'),
-(14, 'filename_change', 'Filename changed: ssl.txt => testfile.txt', 'testbvh', '2024-04-06 12:46:20'),
-(15, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/testother/likeme.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/testother/test2.txt', 'hhg4gg1', '2024-04-06 12:47:17'),
-(16, 'filename_change', 'Filename changed: ggg55454 => test2.txt', 'hhg4gg1', '2024-04-06 12:47:23'),
-(17, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/testfile.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/tet.txt', 'testbvh', '2024-04-06 13:29:47'),
-(18, 'filename_change', 'Filename changed: testfile.txt => tet.txt', 'testbvh', '2024-04-06 13:29:47'),
-(19, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/tet.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/test2.txt', 'testbvh', '2024-04-06 13:31:15'),
-(20, 'filename_change', 'Filename changed: tet.txt => test2.txt', 'testbvh', '2024-04-06 13:31:15'),
-(21, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/test2.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/testfile.txt', 'testbvh', '2024-04-06 13:35:10'),
-(22, 'filename_change', 'Filename changed: test2.txt => testfile.txt', 'testbvh', '2024-04-06 13:35:20'),
-(23, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/ff/tester.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/new.txt', '3', '2024-04-06 14:26:29'),
-(24, 'filename_change', 'Filename changed: tester.txt => new.txt', '3', '2024-04-06 14:26:29'),
-(25, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/new.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt', '3', '2024-04-06 14:44:22'),
-(26, 'filename_change', 'Filename changed: new.txt => xx.txt', '3', '2024-04-06 14:44:22'),
-(27, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/ff//home/virtuoso_vendetta/Bureau/monitor-v1/ff', '3', '2024-04-06 14:45:15'),
-(28, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/ff//home/virtuoso_vendetta/Bureau/monitor-v1/ff => /home/virtuoso_vendetta/Bureau/monitor-v1/ff/ff.txt', '3', '2024-04-06 14:45:25'),
-(29, 'filename_change', 'Filename changed: xx.txt => ff.txt', '3', '2024-04-06 14:45:33'),
-(30, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/ff/ff.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/s.txt', '3', '2024-04-06 14:45:48'),
-(31, 'filename_change', 'Filename changed: ff.txt => s.txt', '3', '2024-04-06 14:45:48'),
-(32, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/s.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/ff/s.txt', '3', '2024-04-06 14:49:26'),
-(33, 'filename_change', 'Filename changed: testfile.txt => xx.txt', '2', '2024-04-11 08:06:30'),
-(34, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/testfile.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/xx.txt', '2', '2024-04-11 08:06:39'),
-(35, 'permissions_change', 'Permissions changed: 644 => 666', '2', '2024-04-11 08:11:36'),
-(36, 'filename_change', 'Filename changed: s.txt => test.txt', '3', '2024-04-11 08:24:28'),
-(37, 'filename_change', 'Filename changed: test.txt => s.txt', '3', '2024-04-11 08:24:41'),
-(38, 'path_change', 'Path changed: /home/virtuoso_vendetta/Bureau/monitor-v1/ff/s.txt => /home/virtuoso_vendetta/Bureau/monitor-v1/coucou.txt', '3', '2024-04-11 09:23:55'),
-(39, 'filename_change', 'Filename changed: s.txt => coucou.txt', '3', '2024-04-11 09:23:55');
 
 -- --------------------------------------------------------
 
@@ -124,7 +80,7 @@ CREATE TABLE `users` (
   `refresh_token_time` datetime DEFAULT NULL,
   `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
   `updated_at` datetime(3) DEFAULT current_timestamp(3)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `users`
@@ -141,7 +97,8 @@ INSERT INTO `users` (`id`, `user_id`, `username`, `email`, `role`, `password`, `
 -- Index pour la table `checkfile`
 --
 ALTER TABLE `checkfile`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `checkfile_upload_by_fkey` (`upload_by`(768));
 
 --
 -- Index pour la table `logs`
@@ -169,7 +126,7 @@ ALTER TABLE `checkfile`
 -- AUTO_INCREMENT pour la table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -178,27 +135,16 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
---
--- Déclencheurs `checkfile`
---
+
 DELIMITER //
 CREATE TRIGGER `file_change_trigger` AFTER UPDATE ON `checkfile` FOR EACH ROW 
 BEGIN
-    IF NEW.path != OLD.path THEN
-        INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('path_change', CONCAT('Path changed: ', OLD.path, ' => ', NEW.path), OLD.id);
-    END IF;
-
-    IF NEW.filename != OLD.filename THEN
-        INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('filename_change', CONCAT('Filename changed: ', OLD.filename, ' => ', NEW.filename), OLD.id);
-    END IF;
-
-    IF NEW.permissions != OLD.permissions THEN
-        INSERT INTO logs (event_type, event_description, file_id)
-        VALUES ('permissions_change', CONCAT('Permissions changed: ', OLD.permissions, ' => ', NEW.permissions), OLD.id);
-    END IF;   
+    INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('UPDATE', 'checkfile', NEW.id, JSON_OBJECT('file_id', NEW.file_id, 'filename', NEW.filename, 'check_mod', NEW.check_mod, 'path', NEW.path, 'permissions', NEW.permissions, 'upload_by', NEW.upload_by, 'upload_at', NEW.upload_at));
 END       
 //
 DELIMITER ;   
@@ -206,7 +152,8 @@ DELIMITER ;
 DELIMITER //
 CREATE TRIGGER `file_delete_trigger` AFTER DELETE ON `checkfile` FOR EACH ROW 
 BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_deleted', CONCAT('File deleted: ', OLD.path)); 
+    INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('DELETE', 'checkfile', OLD.id, JSON_OBJECT('file_id', OLD.file_id, 'filename', OLD.filename, 'check_mod', OLD.check_mod, 'path', OLD.path, 'permissions', OLD.permissions, 'upload_by', OLD.upload_by, 'upload_at', OLD.upload_at)); 
 END
 //
 DELIMITER ;
@@ -214,14 +161,34 @@ DELIMITER ;
 DELIMITER // 
 CREATE TRIGGER `file_insert_trigger` AFTER INSERT ON `checkfile` FOR EACH ROW 
 BEGIN
-    INSERT INTO logs (event_type, event_description) VALUES ('file_inserted', CONCAT('New file inserted: ', NEW.path)); 
+    INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('INSERT', 'checkfile', NEW.id, JSON_OBJECT('file_id', NEW.file_id, 'filename', NEW.filename, 'check_mod', NEW.check_mod, 'path', NEW.path, 'permissions', NEW.permissions, 'upload_by', NEW.upload_by, 'upload_at', NEW.upload_at)); 
 END
 
 //
 DELIMITER ;
 
--- --------------------------------------------------------
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+DELIMITER //
+CREATE TRIGGER `after_user_delete_logs` AFTER DELETE ON `users`FOR EACH ROW 
+BEGIN
+	INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('DELETE', 'users', OLD.id, JSON_OBJECT('user_id', OLD.user_id, 'username', OLD.username, 'email', OLD.email, 'role', OLD.role, 'password', OLD.password, 'token', OLD.token, 'remember_token', OLD.remember_token, 'refresh_token_time', OLD.refresh_token_time, 'created_at', OLD.created_at, 'updated_at', OLD.updated_at));
+END
+//
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER `after_user_insert_logs` AFTER INSERT ON `users`FOR EACH ROW 
+BEGIN
+	INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('INSERT', 'users', NEW.id, JSON_OBJECT('user_id', NEW.user_id, 'username', NEW.username, 'email', NEW.email, 'role', NEW.role, 'password', NEW.password, 'token', NEW.token, 'remember_token', NEW.remember_token, 'refresh_token_time', NEW.refresh_token_time, 'created_at', NEW.created_at, 'updated_at', NEW.updated_at));
+END
+//
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER `after_user_update_logs` AFTER UPDATE ON `users`FOR EACH ROW 
+BEGIN
+	INSERT INTO logs (operation, table_name, record_id, record_data)
+    VALUES ('UPDATE', 'users', NEW.id, JSON_OBJECT('user_id', NEW.user_id, 'username', NEW.username, 'email', NEW.email, 'role', NEW.role, 'password', NEW.password, 'token', NEW.token, 'remember_token', NEW.remember_token, 'refresh_token_time', NEW.refresh_token_time, 'created_at', NEW.created_at, 'updated_at', NEW.updated_at));
+END
+//
+DELIMITER ;
